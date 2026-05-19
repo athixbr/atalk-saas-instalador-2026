@@ -3,7 +3,7 @@
 get_mysql_root_password() {
   
   print_banner
-  printf "${WHITE} 💻 Insira senha para o usuario Deploy e Banco de Dados (Não utilizar caracteres especiais):${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Insira senha para o Banco de Dados (Não utilizar caracteres especiais):${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " mysql_root_password
 }
@@ -11,7 +11,7 @@ get_mysql_root_password() {
 get_link_git() {
   
   print_banner
-  printf "${WHITE} 💻 Insira o link do GITHUB do seu Equipechat que deseja instalar:${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Insira o link do GITHUB do atalk que deseja instalar:${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " link_git
 }
@@ -201,14 +201,14 @@ software_dominio() {
 inquiry_options() {
   
   print_banner
-  printf "${WHITE} 💻 Bem vindo(a) ao Gerenciador Equipechat - Atendimento sem limites, selecione abaixo a proxima ação!${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Bem vindo(a) ao Gerenciador atalk - Atendimento sem limites, selecione abaixo a proxima ação!${GRAY_LIGHT}"
   printf "\n\n"
-  printf "   [0] Instalar Equipechat\n"
-  printf "   [1] Atualizar Equipechat\n"
-  printf "   [2] Deletar Equipechat\n"
-  printf "   [3] Bloquear Equipechat\n"
-  printf "   [4] Desbloquear Equipechat\n"
-  printf "   [5] Alter. dominio Equipechat\n"
+  printf "   [0] Instalar atalk\n"
+  printf "   [1] Atualizar atalk\n"
+  printf "   [2] Deletar atalk\n"
+  printf "   [3] Bloquear atalk\n"
+  printf "   [4] Desbloquear atalk\n"
+  printf "   [5] Alter. dominio atalk\n"
   printf "\n"
   read -p "> " option
 

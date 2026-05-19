@@ -14,7 +14,6 @@ backend_redis_create() {
   sleep 2
 
   sudo su - root <<EOF
-  usermod -aG docker deploy
   docker run --name redis-${instancia_add} -p ${redis_port}:6379 --restart always --detach redis redis-server --requirepass ${mysql_root_password}
   
   sleep 2
@@ -53,8 +52,8 @@ backend_set_env() {
   frontend_url=${frontend_url%%/*}
   frontend_url=https://$frontend_url
 
-sudo su - deploy << EOF
-  cat <<[-]EOF > /home/deploy/${instancia_add}/backend/.env
+sudo su - root << EOF
+  cat <<[-]EOF > /root/${instancia_add}/backend/.env
 NODE_ENV=
 BACKEND_URL=${backend_url}
 FRONTEND_URL=${frontend_url}
@@ -103,8 +102,8 @@ backend_node_dependencies() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${instancia_add}/backend
+  sudo su - root <<EOF
+  cd /root/${instancia_add}/backend
   npm install --force
 EOF
 
@@ -123,8 +122,8 @@ backend_node_build() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${instancia_add}/backend
+  sudo su - root <<EOF
+  cd /root/${instancia_add}/backend
   npm run build
 EOF
 
@@ -143,11 +142,11 @@ backend_update() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${empresa_atualizar}
+  sudo su - root <<EOF
+  cd /root/${empresa_atualizar}
   pm2 stop ${empresa_atualizar}-backend
   git pull
-  cd /home/deploy/${empresa_atualizar}/backend
+  cd /root/${empresa_atualizar}/backend
   npm install --force
   npm update -f
   npm install @types/fs-extra
@@ -174,8 +173,8 @@ backend_db_migrate() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${instancia_add}/backend
+  sudo su - root <<EOF
+  cd /root/${instancia_add}/backend
   npx sequelize db:migrate
 EOF
 
@@ -194,8 +193,8 @@ backend_db_seed() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${instancia_add}/backend
+  sudo su - root <<EOF
+  cd /root/${instancia_add}/backend
   npx sequelize db:seed:all
 EOF
 
@@ -215,8 +214,8 @@ backend_start_pm2() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  cd /home/deploy/${instancia_add}/backend
+  sudo su - root <<EOF
+  cd /root/${instancia_add}/backend
   pm2 start dist/server.js --name ${instancia_add}-backend
 EOF
 

@@ -9,16 +9,8 @@
 #######################################
 system_create_user() {
   print_banner
-  printf "${WHITE} 💻 Agora, vamos criar o usuário para a instancia...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Usando usuário root para a instancia...${GRAY_LIGHT}"
   printf "\n\n"
-
-  sleep 2
-
-  sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt ${mysql_root_password}) -s /bin/bash -G sudo deploy
-  usermod -aG sudo deploy
-EOF
-
   sleep 2
 }
 
@@ -29,14 +21,14 @@ EOF
 #######################################
 system_git_clone() {
   print_banner
-  printf "${WHITE} 💻 Fazendo download do código Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Fazendo download do código atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
 
   sleep 2
 
-  sudo su - deploy <<EOF
-  git clone ${link_git} /home/deploy/${instancia_add}/
+  sudo su - root <<EOF
+  git clone ${link_git} /root/${instancia_add}/
 EOF
 
   sleep 2
@@ -49,7 +41,7 @@ EOF
 #######################################
 system_update() {
   print_banner
-  printf "${WHITE} 💻 Vamos atualizar o sistema Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos atualizar o sistema atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
@@ -71,7 +63,7 @@ EOF
 #######################################
 deletar_tudo() {
   print_banner
-  printf "${WHITE} 💻 Vamos deletar o Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos deletar o atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
@@ -93,8 +85,8 @@ EOF
 
 sleep 2
 
-sudo su - deploy <<EOF
- rm -rf /home/deploy/${empresa_delete}
+sudo su - root <<EOF
+ rm -rf /root/${empresa_delete}
  pm2 delete ${empresa_delete}-frontend ${empresa_delete}-backend
  pm2 save
 EOF
@@ -102,7 +94,7 @@ EOF
   sleep 2
 
   print_banner
-  printf "${WHITE} 💻 Remoção da Instancia/Empresa ${empresa_delete} realizado com sucesso ...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Remoção da Instancia/Empresa ${empresa_delete} realizada com sucesso ...${GRAY_LIGHT}"
   printf "\n\n"
 
 
@@ -117,12 +109,12 @@ EOF
 #######################################
 configurar_bloqueio() {
   print_banner
-  printf "${WHITE} 💻 Vamos bloquear o Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos bloquear o atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
 
-sudo su - deploy <<EOF
+sudo su - root <<EOF
  pm2 stop ${empresa_bloquear}-backend
  pm2 save
 EOF
@@ -144,12 +136,12 @@ EOF
 #######################################
 configurar_desbloqueio() {
   print_banner
-  printf "${WHITE} 💻 Vamos Desbloquear o Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos Desbloquear o atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
 
-sudo su - deploy <<EOF
+sudo su - root <<EOF
  pm2 start ${empresa_bloquear}-backend
  pm2 save
 EOF
@@ -170,7 +162,7 @@ EOF
 #######################################
 configurar_dominio() {
   print_banner
-  printf "${WHITE} 💻 Vamos Alterar os Dominios do Equipechat...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos Alterar os Dominios do atalk...${GRAY_LIGHT}"
   printf "\n\n"
 
 sleep 2
@@ -184,12 +176,12 @@ EOF
 
 sleep 2
 
-  sudo su - deploy <<EOF
-  cd && cd /home/deploy/${empresa_dominio}/frontend
+  sudo su - root <<EOF
+  cd && cd /root/${empresa_dominio}/frontend
   sed -i "1c\REACT_APP_BACKEND_URL=https://${alter_backend_url}" .env
-  cd && cd /home/deploy/${empresa_dominio}/backend
+  cd && cd /root/${empresa_dominio}/backend
   sed -i "2c\BACKEND_URL=https://${alter_backend_url}" .env
-  sed -i "3c\FRONTEND_URL=https://${alter_frontend_url}" .env 
+  sed -i "3c\FRONTEND_URL=https://${alter_frontend_url}" .env
 EOF
 
 sleep 2
@@ -262,7 +254,7 @@ EOF
   sleep 2
 
   print_banner
-  printf "${WHITE} 💻 Alteração de dominio da Instancia/Empresa ${empresa_dominio} realizado com sucesso ...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Alteração de dominio da Instancia/Empresa ${empresa_dominio} realizada com sucesso ...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
